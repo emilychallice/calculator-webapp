@@ -15,6 +15,8 @@ equalsButton.onclick = equalsButtonHandler;
 operatorButtons.forEach((button) => button.onclick = operatorButtonHandler);
 numberButtons.forEach((button) => button.onclick = numberButtonHandler);
 
+document.body.addEventListener("keydown", keydownHandler);
+
 /*///////////////////*/
 /* --- FUNCTIONS --- */
 /*///////////////////*/
@@ -38,15 +40,32 @@ function clearButtonHandler() {
   EXPR_IS_ANS = false;
 }
 
+function keydownHandler(e) {
+  let key = e.key;
+
+  if (possibleOperators.includes(key)) {
+    operatorButtonHandler(e);
+  } else if ("1234567890.".includes(key)) {
+    numberButtonHandler(e);
+  } else if (key === '=' || key == "Enter") {
+    equalsButtonHandler();
+  } else if (key === "Backspace") {
+    clearButtonHandler();
+  }
+}
+
 function numberButtonHandler(e) {
-  let digit = e.target.textContent;
+  // Handle click or keydown
+  let digit = (e.type === "click") ? e.target.textContent : e.key;
+
   EXPR = EXPR_IS_ANS ? digit : EXPR + digit;
   EXPR_IS_ANS = false;
   updateOutputScreen(EXPR);
 }
 
 function operatorButtonHandler(e) {
-  let operator = e.target.textContent;
+  // Handle click or keydown
+  let operator = (e.type === "click") ? e.target.textContent : e.key;
 
   if (containsOperators(EXPR)) {
     if (endsWithOperator(EXPR)) {

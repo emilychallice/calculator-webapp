@@ -48,7 +48,8 @@ button:hover {
   color: white;
 }
 
-button:active{
+button:active,
+button.active {
   transform: skew(10deg) scale(1.75);
   font-weight: bold;
   background-color: transparent;
